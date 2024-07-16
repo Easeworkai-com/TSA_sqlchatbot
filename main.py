@@ -162,7 +162,7 @@ if os.path.exists(logo_path):
 else:
     st.error(f"Logo file not found at {logo_path}")
 
-st.markdown("<h1 class='input-text'><b>🤖 Ask a question about the spend data</b></h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='input-text'><b>🤖 Ask a question about the tail spend: </b></h1>", unsafe_allow_html=True)
 
 # Function to query the database
 def query_db(prompt, session_id):
