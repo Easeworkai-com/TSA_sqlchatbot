@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import time
 import os
+from PIL import Image
 
 API_URL = "http://127.0.0.1:8000"
 
@@ -153,9 +154,11 @@ st.markdown(
 )
 
 # Verify that the logo file exists
-logo_path = r"D:\AI_team\SpendAnalysis\src\Easeworklogo.png"
+logo_path = "logo.png"
+image = Image.open(logo_path)
+image = image.resize((484, 128))
 if os.path.exists(logo_path):
-    st.image(logo_path, use_column_width=True)
+    st.image(image, use_column_width=False)
 else:
     st.error(f"Logo file not found at {logo_path}")
 
