@@ -155,9 +155,9 @@ st.markdown(
 
 # Verify that the logo file exists
 logo_path = "logo.png"
-image = Image.open(logo_path)
-image = image.resize((484, 128))
 if os.path.exists(logo_path):
+    image = Image.open(logo_path)
+    image = image.resize((484, 128))
     st.image(image, use_column_width=False)
 else:
     st.error(f"Logo file not found at {logo_path}")
@@ -196,9 +196,8 @@ def reset_memory(session_id):
 
 # Function to create a new session
 def create_session():
-    session_name = f"Session_{int(time.time())}"
     try:
-        response = requests.post(f"{API_URL}/create_session", json={"session_name": session_name})
+        response = requests.post(f"{API_URL}/create_session", json={"session_name": ""})
         response.raise_for_status()
         result = response.json()
         if 'session_id' in result and 'session_name' in result:
@@ -241,19 +240,21 @@ if st.sidebar.button("Reset Conversation Memory"):
 # Display existing sessions in a list format
 sessions = get_sessions()
 for session in sessions:
-    if st.sidebar.button(session):
-        st.session_state['session_id'] = session
+    session_id = session["session_id"]
+    session_name = session["session_name"]
+    if st.sidebar.button(session_name):
+        st.session_state['session_id'] = session_id
         st.rerun()
 
 # Create a new session button
 if st.sidebar.button("Create New Session"):
-    session_id, message = create_session()
+    session_id, session_name = create_session()
     if session_id:
         st.session_state['session_id'] = session_id
-        st.sidebar.success(f"Session created: {session_id}")
+        st.sidebar.success(f"Session created: {session_name}")
         st.rerun()
     else:
-        st.sidebar.error(message)
+        st.sidebar.error(session_name)
 
 # Load chat history for the selected session
 history = []
